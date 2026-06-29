@@ -5,6 +5,7 @@ target/
 !**/src/test/**/target/
 challengelab.mv.db
 challengelab.trace.db
+challengelab.mv.db.lock
 
 ### STS ###
 .apt_generated
