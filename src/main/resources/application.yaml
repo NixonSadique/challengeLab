@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: challengeLab
+  datasource:
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: password
+    url: jdbc:h2:./challengelab
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
