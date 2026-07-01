@@ -41,8 +41,7 @@ public class Challenge {
     @Column(nullable = false)
     private Boolean areTeamsAllowed;
 
-    @Min(2)
-    private Integer maxTeamSize = 2;
+    private Integer maxTeamSize;
 
     @Enumerated(EnumType.STRING)
     private ChallengeStatus status;
