@@ -1,24 +1,33 @@
 package com.nixon.challengelab.mapper;
 
+import com.nixon.challengelab.dto.request.TeamRequest;
 import com.nixon.challengelab.dto.response.TeamResponse;
 import com.nixon.challengelab.model.Team;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import java.util.Collections;
 import java.util.List;
+@Component
+@RequiredArgsConstructor
+public class TeamMapper extends Mapper<Team, TeamResponse> {
 
-public class TeamMapper {
+    private final TeamMemberMapper teamMemberMapper;
 
-    public static TeamResponse toTeamResponse(Team team) {
-        List<?> members = team.getMembers() == null
-                ? Collections.emptyList()
-                : team.getMembers().stream().map(TeamMemberMapper::toTeamMemberResponse).toList();
+    public Team toTeam(TeamRequest teamRequest) {
+        Team team = new Team();
+        team.setName(teamRequest.name());
+        return team;
+    }
 
+
+    public TeamResponse toDto(Team team) {
         return new TeamResponse(
                 team.getId(),
                 team.getName(),
                 team.getChallenge().getId(),
                 team.getCreatedAt(),
-                team.getMembers().stream().map(TeamMemberMapper::toTeamMemberResponse).toList(),
+                teamMemberMapper.toDtoList(team.getMembers()),
                 team.getSubmissions() == null ? 0 : team.getSubmissions().size()
         );
     }

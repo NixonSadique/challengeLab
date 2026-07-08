@@ -11,7 +11,6 @@ public record ChallengeResponse(
         String description,
         Difficulty difficulty,
         String category,
-        Boolean areTeamsAllowed,
         Integer maxTeamSize,
         ChallengeStatus status,
         ZonedDateTime deadline

@@ -38,9 +38,6 @@ public class Challenge {
     @Column(nullable = false, length = 100)
     private String category;
 
-    @Column(nullable = false)
-    private Boolean areTeamsAllowed;
-
     private Integer maxTeamSize;
 
     @Enumerated(EnumType.STRING)
@@ -63,5 +60,9 @@ public class Challenge {
 
     @OneToMany(mappedBy = "challenge")
     private List<Submission> submissions;
+
+    public Boolean areTeamsAllowed() {
+        return maxTeamSize != null && maxTeamSize > 1;
+    }
 }
 

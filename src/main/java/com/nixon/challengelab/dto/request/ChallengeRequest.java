@@ -13,7 +13,6 @@ public record ChallengeRequest(
         @NotBlank String description,
         @NotBlank Difficulty difficulty,
         @NotBlank String category,
-        @NotNull Boolean areTeamsAllowed,
         Integer maxTeamSize,
         @NotNull @Future ZonedDateTime deadline
 ) {

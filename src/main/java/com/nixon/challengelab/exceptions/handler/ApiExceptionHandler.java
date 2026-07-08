@@ -4,6 +4,7 @@ import com.nixon.challengelab.dto.response.MethodArgNotValidExceptionResponse;
 import com.nixon.challengelab.dto.response.StandardErrorResponse;
 import com.nixon.challengelab.dto.response.ValidationErrors;
 import com.nixon.challengelab.exceptions.ConflictException;
+import com.nixon.challengelab.exceptions.ForbiddenException;
 import com.nixon.challengelab.exceptions.ResourceNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
@@ -39,6 +40,17 @@ public class ApiExceptionHandler {
                 ex.getMessage()
         );
         return new ResponseEntity<>(response, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(ForbiddenException.class)
+    public ResponseEntity<StandardErrorResponse> handleForbiddenException(ConflictException ex, HttpServletRequest request) {
+        StandardErrorResponse response = new StandardErrorResponse(
+                HttpStatus.FORBIDDEN.value(),
+                OffsetDateTime.now(),
+                request.getServletPath(),
+                ex.getMessage()
+        );
+        return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
     }
 
 
