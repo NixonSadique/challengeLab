@@ -6,7 +6,6 @@ public record RatingRequest(
         @NotNull @Min(1) @Max(5) Integer creativity,
         @NotNull @Min(1) @Max(5) Integer technicalQuality,
         @NotNull @Min(1) @Max(5) Integer completeness,
-        @NotBlank @Size(min = 10, max = 500) String feedback,
-        @NotNull Long submissionId
+        @NotBlank @Size(min = 10, max = 500) String feedback
 ) {
 }

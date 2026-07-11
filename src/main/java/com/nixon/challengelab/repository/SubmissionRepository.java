@@ -7,11 +7,13 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-interface SubmissionRepository extends JpaRepository<Submission, Long> {
+public interface SubmissionRepository extends JpaRepository<Submission, Long> {
 
     List<Submission> findAllByChallengeId(Long challengeId);
 
     List<Submission> findAllByTeamId(Long teamId);
 
     Boolean existsByTeamIdAndChallengeId(Long teamId, Long challengeId);
+
+    List<Submission> findAllByUserId(Long userId);
 }
