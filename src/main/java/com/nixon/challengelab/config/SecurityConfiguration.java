@@ -22,7 +22,12 @@ class SecurityConfiguration {
                 .csrf(AbstractHttpConfigurer::disable)
                 .headers(
                         headers -> headers.frameOptions(FrameOptionsConfig::sameOrigin)
-                ).build();
+                )
+                .authorizeHttpRequests(
+                        matcherRegistry ->
+                                matcherRegistry.requestMatchers("")
+                )
+                .build();
     }
 
 }

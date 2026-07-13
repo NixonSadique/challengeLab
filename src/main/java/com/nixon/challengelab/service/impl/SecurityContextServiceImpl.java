@@ -1,8 +1,9 @@
-package com.nixon.challengelab.security;
+package com.nixon.challengelab.service.impl;
 
 import com.nixon.challengelab.exceptions.ResourceNotFoundException;
 import com.nixon.challengelab.model.User;
 import com.nixon.challengelab.repository.UserRepository;
+import com.nixon.challengelab.service.SecurityContextService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class SecurityContextService {
+public class SecurityContextServiceImpl implements SecurityContextService {
 
     private final UserRepository repository;
 

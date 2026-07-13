@@ -14,7 +14,7 @@ import com.nixon.challengelab.model.enums.SubmissionStatus;
 import com.nixon.challengelab.repository.ChallengeRepository;
 import com.nixon.challengelab.repository.SubmissionRepository;
 import com.nixon.challengelab.repository.TeamRepository;
-import com.nixon.challengelab.security.SecurityContextService;
+import com.nixon.challengelab.service.SecurityContextService;
 import com.nixon.challengelab.service.SubmissionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

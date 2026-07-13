@@ -13,7 +13,7 @@ import com.nixon.challengelab.model.enums.ChallengeStatus;
 import com.nixon.challengelab.repository.ChallengeRepository;
 import com.nixon.challengelab.repository.TeamMemberRepository;
 import com.nixon.challengelab.repository.TeamRepository;
-import com.nixon.challengelab.security.SecurityContextService;
+import com.nixon.challengelab.service.SecurityContextService;
 import com.nixon.challengelab.service.TeamService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

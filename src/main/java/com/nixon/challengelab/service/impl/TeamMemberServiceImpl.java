@@ -1,9 +1,10 @@
-package com.nixon.challengelab.service;
+package com.nixon.challengelab.service.impl;
 
 import com.nixon.challengelab.dto.response.TeamMemberResponse;
 import com.nixon.challengelab.mapper.TeamMemberMapper;
 import com.nixon.challengelab.repository.TeamMemberRepository;
-import com.nixon.challengelab.security.SecurityContextService;
+import com.nixon.challengelab.service.SecurityContextService;
+import com.nixon.challengelab.service.TeamMemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

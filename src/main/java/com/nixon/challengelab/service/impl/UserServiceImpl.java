@@ -7,7 +7,7 @@ import com.nixon.challengelab.mapper.UserMapper;
 import com.nixon.challengelab.model.User;
 import com.nixon.challengelab.model.enums.Role;
 import com.nixon.challengelab.repository.UserRepository;
-import com.nixon.challengelab.security.SecurityContextService;
+import com.nixon.challengelab.service.SecurityContextService;
 import com.nixon.challengelab.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
