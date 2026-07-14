@@ -48,6 +48,7 @@ public class JwtServiceImpl implements JwtService {
     public ResponseCookie generateTokenCookie(String token) {
         return ResponseCookie.from(jwtCookieName, token)
                 .path("/")
+                .httpOnly(true)
                 .maxAge(24 * 60 * 60 * 7)
                 .build();
 
@@ -65,7 +66,7 @@ public class JwtServiceImpl implements JwtService {
                 .findFirst().orElse(null);
 
         if (jwtCookie == null)
-            return  null;
+            return null;
 
         return jwtCookie.getValue();
     }
@@ -78,6 +79,15 @@ public class JwtServiceImpl implements JwtService {
     @Override
     public boolean isTokenExpired(String token) {
         return extractAllClaims(token).getExpiration().before(new Date());
+    }
+
+    @Override
+    public ResponseCookie getCleanJwtTokenFromCookie() {
+        return ResponseCookie.from(jwtCookieName, "")
+                .path("/")
+                .httpOnly(true)
+                .maxAge(0)
+                .build();
     }
 
     private Claims extractAllClaims(String token) {

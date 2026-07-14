@@ -43,7 +43,7 @@ public class ApiExceptionHandler {
     }
 
     @ExceptionHandler(ForbiddenException.class)
-    public ResponseEntity<StandardErrorResponse> handleForbiddenException(ConflictException ex, HttpServletRequest request) {
+    public ResponseEntity<StandardErrorResponse> handleForbiddenException(ForbiddenException ex, HttpServletRequest request) {
         StandardErrorResponse response = new StandardErrorResponse(
                 HttpStatus.FORBIDDEN.value(),
                 OffsetDateTime.now(),

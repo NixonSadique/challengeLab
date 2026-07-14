@@ -10,10 +10,13 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+logging:
+  level:
+    web: debug
 application:
   security:
     jwt:
-      secret: ${JWT_SECRET}
+      secret: ${SECRET_KEY}
       expiration: 900000
       name: jwt-cookie
     refresh-token:

@@ -1,8 +1,6 @@
 package com.nixon.challengelab.dto.response;
 
-public record TokenResponse(
-        Long userId,
-        String username,
+public record RefreshTokenResponse(
         String accessToken,
         String refreshToken
 ) {

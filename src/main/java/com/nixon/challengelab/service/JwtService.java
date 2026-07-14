@@ -18,6 +18,7 @@ public interface JwtService {
 
     boolean isTokenExpired(String token);
 
+    ResponseCookie getCleanJwtTokenFromCookie();
 
 
 }
