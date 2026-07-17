@@ -59,4 +59,9 @@ public class RatingServiceImpl implements RatingService {
         }
         return ratingRepository.getAverageRatingBySubmissionId(submissionId);
     }
+
+    @Override
+    public Long countRatings() {
+        return ratingRepository.count();
+    }
 }

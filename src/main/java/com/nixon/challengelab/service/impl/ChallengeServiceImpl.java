@@ -99,4 +99,14 @@ public class ChallengeServiceImpl implements ChallengeService {
     public void deleteById(Long id) {
         repository.deleteById(id);
     }
+
+    @Override
+    public Long countChallenges() {
+        return repository.count();
+    }
+
+    @Override
+    public Long countActive() {
+        return repository.countByDeadlineAfter(ZonedDateTime.now());
+    }
 }

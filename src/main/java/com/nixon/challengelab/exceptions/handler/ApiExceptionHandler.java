@@ -68,7 +68,7 @@ public class ApiExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public  ResponseEntity<MethodArgNotValidExceptionResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex, HttpServletRequest request) {
         StandardErrorResponse response = new StandardErrorResponse(
-                HttpStatus.NOT_FOUND.value(),
+                HttpStatus.BAD_REQUEST.value(),
                 OffsetDateTime.now(),
                 request.getServletPath(),
                 "A validation Error Occurred!"
@@ -83,6 +83,5 @@ public class ApiExceptionHandler {
                 response, fields
         ), HttpStatus.BAD_REQUEST);
     }
-
 
 }

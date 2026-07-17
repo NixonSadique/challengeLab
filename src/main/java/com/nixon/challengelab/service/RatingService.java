@@ -13,6 +13,8 @@ public interface RatingService {
 
     Double getAverageBySubmissionId(Long submissionId);
 
+    Long countRatings();
+
 }
 
 

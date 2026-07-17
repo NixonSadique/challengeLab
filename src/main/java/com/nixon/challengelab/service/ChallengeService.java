@@ -31,4 +31,8 @@ public interface ChallengeService {
 
     void deleteById(Long id);
 
+    Long countChallenges();
+
+    Long countActive();
+
 }

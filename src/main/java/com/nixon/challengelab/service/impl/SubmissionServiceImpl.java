@@ -110,4 +110,9 @@ public class SubmissionServiceImpl implements SubmissionService {
 
         return mapper.toDto(submissionRepository.save(submission));
     }
+
+    @Override
+    public Long countSubmissions() {
+        return submissionRepository.count();
+    }
 }

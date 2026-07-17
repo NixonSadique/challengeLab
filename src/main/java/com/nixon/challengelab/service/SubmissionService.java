@@ -21,4 +21,6 @@ public interface SubmissionService {
 
     SubmissionResponse setWinner(Long submissionId);
 
+    Long countSubmissions();
+
 }

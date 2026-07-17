@@ -5,11 +5,6 @@ import com.nixon.challengelab.dto.response.UserResponse;
 import com.nixon.challengelab.model.enums.Role;
 import com.nixon.challengelab.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springdoc.core.annotations.ParameterObject;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,12 +27,6 @@ class UserController {
         return ResponseEntity.ok(service.getByUsername(username));
     }
 
-    @GetMapping("/")
-    ResponseEntity<Page<UserResponse>> getAll(
-            @ParameterObject @PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.ASC)
-            Pageable pageable) {
-        return ResponseEntity.ok(service.getAll(pageable));
-    }
 
     @GetMapping("/me")
     ResponseEntity<UserResponse> getProfile() {

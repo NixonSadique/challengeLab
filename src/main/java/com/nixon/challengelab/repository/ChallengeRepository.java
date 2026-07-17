@@ -14,6 +14,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -81,4 +82,6 @@ public interface ChallengeRepository extends JpaRepository<Challenge, Long>, Jpa
             return criteriaBuilder.and(predicates);
         };
     }
+
+    Long countByDeadlineAfter(ZonedDateTime deadlineAfter);
 }
