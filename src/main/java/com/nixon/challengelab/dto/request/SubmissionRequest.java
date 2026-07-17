@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotNull;
 public record SubmissionRequest(
         @NotBlank String title,
         @NotBlank String description,
-        @NotBlank String solutionUrl
+        @NotBlank String solutionUrl,
+        Long teamId
 ) {
 }

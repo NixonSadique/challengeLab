@@ -19,12 +19,15 @@ public interface ChallengeService {
 
     String updateToClosed();
 
-
     Page<ChallengeResponse> getWithFilters(ChallengeFilters filters, Pageable pageable);
+
+    Page<ChallengeResponse> getFromCurrentCreator(Pageable pageable);
 
     ChallengeResponse getById(Long id);
 
-    ChallengeResponse updateChallenge(Long id, ChallengeRequest request, ChallengeStatus status);
+    ChallengeResponse updateChallenge(Long id, ChallengeRequest request);
+
+    ChallengeResponse updateChallenge(Long id, ChallengeStatus status);
 
     void deleteById(Long id);
 

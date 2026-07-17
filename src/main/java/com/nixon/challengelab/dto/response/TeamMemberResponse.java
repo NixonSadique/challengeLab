@@ -9,6 +9,6 @@ public record TeamMemberResponse(
         String firstName,
         String lastName,
         String avatarUrl,
-        MemberRole role
+        MemberRole memberRole
 ) {
 }

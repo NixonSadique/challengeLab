@@ -22,6 +22,8 @@ public interface ChallengeRepository extends JpaRepository<Challenge, Long>, Jpa
 
     List<Challenge> findAllByCreatorId(Long creatorId);
 
+    Page<Challenge> findAllByCreatorId(Long creatorId, Pageable pageable);
+
     Page<Challenge> findAllByCreatorEmailOrCreatorUsername(String email, String username,Pageable pageable);
 
     @Transactional

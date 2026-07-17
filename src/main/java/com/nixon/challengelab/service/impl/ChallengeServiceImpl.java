@@ -15,6 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 
 import static com.nixon.challengelab.repository.ChallengeRepository.withFilters;
@@ -58,6 +59,11 @@ public class ChallengeServiceImpl implements ChallengeService {
     }
 
     @Override
+    public Page<ChallengeResponse> getFromCurrentCreator(Pageable pageable) {
+        return mapper.toDtoPage(repository.findAllByCreatorId(contextService.getCurrentUserId(), pageable));
+    }
+
+    @Override
     public ChallengeResponse getById(Long id) {
         return mapper.toDto(repository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Challenge not found with id: " + id)
@@ -65,14 +71,28 @@ public class ChallengeServiceImpl implements ChallengeService {
     }
 
     @Override
-    public ChallengeResponse updateChallenge(Long id, ChallengeRequest request, ChallengeStatus status) {
+    public ChallengeResponse updateChallenge(Long id, ChallengeRequest request) {
         Challenge challenge = repository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Challenge not found with id: " + id)
         );
 
-        Challenge updated = mapper.update(request, challenge, status);
+        Challenge updated = mapper.update(request, challenge);
 
         return mapper.toDto(repository.save(updated));
+    }
+
+    @Override
+    public ChallengeResponse updateChallenge(Long id, ChallengeStatus status) {
+        Challenge challenge = repository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("Challenge not found with id: " + id)
+        );
+
+        if (status.equals(ChallengeStatus.CLOSED)) {
+            challenge.setDeadline(ZonedDateTime.now());
+        }
+
+        challenge.setStatus(status);
+        return mapper.toDto(repository.save(challenge));
     }
 
     @Override

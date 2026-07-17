@@ -33,10 +33,9 @@ public class ChallengeMapper extends Mapper<Challenge, ChallengeResponse> {
         );
     }
 
-    public Challenge update(ChallengeRequest request, Challenge challenge, ChallengeStatus status) {
+    public Challenge update(ChallengeRequest request, Challenge challenge) {
         challenge.setTitle(request.title() != null ? request.title() : challenge.getTitle());
         challenge.setDescription(request.description() != null ? request.description() : challenge.getDescription());
-        challenge.setStatus(status != null ? status : challenge.getStatus());
         challenge.setDifficulty(request.difficulty() != null ? request.difficulty() : challenge.getDifficulty());
         challenge.setCategory(request.category() != null ? request.category() : challenge.getCategory());
         challenge.setMaxTeamSize(request.maxTeamSize() != null ? request.maxTeamSize() : challenge.getMaxTeamSize());

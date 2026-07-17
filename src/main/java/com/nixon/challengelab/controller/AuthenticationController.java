@@ -39,7 +39,7 @@ class AuthenticationController {
         ResponseCookie refreshTokenCookie = refreshTokenService.generateRefreshTokenCookie(tokenResponse.refreshToken());
 
         return ResponseEntity.status(HttpStatus.CREATED)
-                .location(URI.create("/api/v1/user/" + tokenResponse.userId()))
+                .location(URI.create("/api/v1/users/" + tokenResponse.userId()))
                 .header(SET_COOKIE, jwtCookie.toString())
                 .header(SET_COOKIE, refreshTokenCookie.toString())
                 .body(tokenResponse);
