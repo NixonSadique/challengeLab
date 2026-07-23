@@ -2,18 +2,13 @@ package com.nixon.challengelab.service.impl;
 
 import com.nixon.challengelab.dto.request.RefreshTokenRequest;
 import com.nixon.challengelab.dto.response.RefreshTokenResponse;
-import com.nixon.challengelab.dto.response.TokenResponse;
 import com.nixon.challengelab.exceptions.ForbiddenException;
 import com.nixon.challengelab.exceptions.ResourceNotFoundException;
-import com.nixon.challengelab.mapper.RefreshTokenMapper;
 import com.nixon.challengelab.model.RefreshToken;
 import com.nixon.challengelab.model.User;
 import com.nixon.challengelab.repository.RefreshTokenRepository;
-import com.nixon.challengelab.repository.UserRepository;
 import com.nixon.challengelab.service.JwtService;
 import com.nixon.challengelab.service.RefreshTokenService;
-import com.nixon.challengelab.service.SecurityContextService;
-import io.micrometer.common.util.StringUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,7 +26,6 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
 
     private final RefreshTokenRepository tokenRepository;
     private final JwtService jwtService;
-    private final RefreshTokenMapper mapper;
 
     @Value("${application.security.refresh-token.expiration}")
     private long refreshExpiration;
@@ -86,11 +80,16 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
 
     @Override
     public String getRefreshTokenFromCookies(HttpServletRequest request) {
-        var refreshCookie = Arrays.stream(request.getCookies())
+        var cookies = request.getCookies();
+        if (cookies == null) {
+            return null;
+        }
+
+        var refreshCookie = Arrays.stream(cookies)
                 .filter(cookie -> cookie.getName().equals(refreshTokenName))
                 .findFirst().orElse(null);
         if (refreshCookie == null) {
-            return "";
+            return null;
         }
         return refreshCookie.getValue();
     }

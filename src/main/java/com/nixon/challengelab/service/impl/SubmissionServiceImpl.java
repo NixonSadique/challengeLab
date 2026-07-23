@@ -58,7 +58,7 @@ public class SubmissionServiceImpl implements SubmissionService {
                 () -> new ResourceNotFoundException("Team with id: " + teamId + " not found!")
         );
 
-        if (team.getMembers().stream().anyMatch(teamMember -> teamMember.getUser().equals(currentUser))) {
+        if (team.getMembers().stream().noneMatch(teamMember -> teamMember.getUser().equals(currentUser))) {
             throw new ForbiddenException("User not part of the requested team!");
         }
 
@@ -93,10 +93,13 @@ public class SubmissionServiceImpl implements SubmissionService {
         if (submissionUser != null && submissionUser.getId().equals(currentUserId)
                 && submission.getStatus() != SubmissionStatus.WINNER) {
             submissionRepository.delete(submission);
+            return;
         }
 
-        if (memberRepository.existsByTeamIdAndUserId(submission.getTeam().getId(), currentUserId)) {
+        if (submission.getTeam() != null
+                && memberRepository.existsByTeamIdAndUserId(submission.getTeam().getId(), currentUserId)) {
             submissionRepository.delete(submission);
+            return;
         }
 
         throw new ForbiddenException("User not part of the requested team!");
