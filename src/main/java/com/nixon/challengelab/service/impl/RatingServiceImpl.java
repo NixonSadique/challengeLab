@@ -8,9 +8,11 @@ import com.nixon.challengelab.exceptions.ResourceNotFoundException;
 import com.nixon.challengelab.mapper.RatingMapper;
 import com.nixon.challengelab.model.Rating;
 import com.nixon.challengelab.model.Submission;
+import com.nixon.challengelab.model.Team;
 import com.nixon.challengelab.model.User;
 import com.nixon.challengelab.repository.RatingRepository;
 import com.nixon.challengelab.repository.SubmissionRepository;
+import com.nixon.challengelab.repository.TeamMemberRepository;
 import com.nixon.challengelab.service.RatingService;
 import com.nixon.challengelab.service.SecurityContextService;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +26,7 @@ public class RatingServiceImpl implements RatingService {
 
     private final RatingRepository ratingRepository;
     private final SubmissionRepository submissionRepository;
+    private final TeamMemberRepository memberRepository;
     private final SecurityContextService contextService;
     private final RatingMapper mapper;
 
@@ -51,12 +54,22 @@ public class RatingServiceImpl implements RatingService {
         Submission submission = submissionRepository.findById(submissionId).orElseThrow(
                 () -> new ResourceNotFoundException("Submission not found!")
         );
+        User userFromSubmission = submission.getUser();
+        Long currentUserId = contextService.getCurrentUserId();
 
-        Long userId = contextService.getCurrentUserId();
-        if (!submission.getUser().getId().equals(userId) ||
-                !submission.getChallenge().getCreator().getId().equals(userId)) {
-            throw new ForbiddenException("Only the submitter or the challenge creator can see his average!");
+        boolean isSubmitter = userFromSubmission != null && userFromSubmission.getId().equals(currentUserId);
+        boolean isCreator = submission.getChallenge().getCreator().getId().equals(currentUserId);
+
+        if (!isSubmitter && !isCreator) {
+            throw new ForbiddenException("Only the submitter(s) or the challenge creator can see the average!");
         }
+
+
+        Team team = submission.getTeam();
+        if (team != null && !memberRepository.existsByTeamIdAndUserId(team.getId(), currentUserId)) {
+            throw new ForbiddenException("Only the submitter(s) or the challenge creator can see the average!");
+        }
+
         return ratingRepository.getAverageRatingBySubmissionId(submissionId);
     }
 

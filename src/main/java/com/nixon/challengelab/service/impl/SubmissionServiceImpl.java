@@ -6,6 +6,7 @@ import com.nixon.challengelab.exceptions.ConflictException;
 import com.nixon.challengelab.exceptions.ForbiddenException;
 import com.nixon.challengelab.exceptions.ResourceNotFoundException;
 import com.nixon.challengelab.mapper.SubmissionMapper;
+import com.nixon.challengelab.model.Challenge;
 import com.nixon.challengelab.model.Submission;
 import com.nixon.challengelab.model.Team;
 import com.nixon.challengelab.model.User;
@@ -13,6 +14,7 @@ import com.nixon.challengelab.model.enums.ChallengeStatus;
 import com.nixon.challengelab.model.enums.SubmissionStatus;
 import com.nixon.challengelab.repository.ChallengeRepository;
 import com.nixon.challengelab.repository.SubmissionRepository;
+import com.nixon.challengelab.repository.TeamMemberRepository;
 import com.nixon.challengelab.repository.TeamRepository;
 import com.nixon.challengelab.service.SecurityContextService;
 import com.nixon.challengelab.service.SubmissionService;
@@ -29,6 +31,7 @@ public class SubmissionServiceImpl implements SubmissionService {
     private final SubmissionRepository submissionRepository;
     private final ChallengeRepository challengeRepository;
     private final TeamRepository teamRepository;
+    private final TeamMemberRepository memberRepository;
     private final SubmissionMapper mapper;
     private final SecurityContextService contextService;
 
@@ -85,10 +88,18 @@ public class SubmissionServiceImpl implements SubmissionService {
                 () -> new ResourceNotFoundException("Submission Not found!")
         );
 
-        if (submission.getUser().getId().equals(contextService.getCurrentUserId())
+        User submissionUser = submission.getUser();
+        Long currentUserId = contextService.getCurrentUserId();
+        if (submissionUser != null && submissionUser.getId().equals(currentUserId)
                 && submission.getStatus() != SubmissionStatus.WINNER) {
             submissionRepository.delete(submission);
         }
+
+        if (memberRepository.existsByTeamIdAndUserId(submission.getTeam().getId(), currentUserId)) {
+            submissionRepository.delete(submission);
+        }
+
+        throw new ForbiddenException("User not part of the requested team!");
     }
 
     @Override
@@ -104,7 +115,15 @@ public class SubmissionServiceImpl implements SubmissionService {
                 () -> new ResourceNotFoundException("Submission Not found!")
         );
 
-        if (submission.getChallenge().getCreator().getId().equals(contextService.getCurrentUserId()))
+        Challenge challenge = submission.getChallenge();
+        if (!challenge.getDeadline().isBefore(ZonedDateTime.now()) && challenge.getStatus() != ChallengeStatus.CLOSED) {
+            throw new ConflictException("Cannot set winner for ongoing Challenge!");
+        }
+
+        if (submissionRepository.existsByStatusAndChallengeId(SubmissionStatus.WINNER, challenge.getId())) {
+            throw new ConflictException("This challenge already has a winner");
+        }
+        if (challenge.getCreator().getId().equals(contextService.getCurrentUserId()))
             submission.setStatus(SubmissionStatus.WINNER);
 
 

@@ -63,13 +63,8 @@ public interface ChallengeRepository extends JpaRepository<Challenge, Long>, Jpa
             if (filters.maxAllowedTeamSize() != null && filters.maxAllowedTeamSize() > 0) {
                 predicates.add(
                         criteriaBuilder.lessThanOrEqualTo(
-                                root.get("maxAllowedTeamSize"), filters.maxAllowedTeamSize())
+                                root.get("maxTeamSize"), filters.maxAllowedTeamSize())
                 );
-            }
-
-            if (filters.areTeamsAllowed() != null && filters.areTeamsAllowed()) {
-                predicates.add(
-                        criteriaBuilder.equal(root.get("areTeamsAllowed"), true));
             }
 
             if (filters.status() != null) {

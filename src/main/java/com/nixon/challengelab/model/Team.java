@@ -30,7 +30,7 @@ public class Team {
     @JoinColumn(name = "challenge_id", nullable = false)
     private Challenge challenge;
 
-    @OneToMany(mappedBy = "team")
+    @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TeamMember> members;
 
     @OneToMany(mappedBy = "team")

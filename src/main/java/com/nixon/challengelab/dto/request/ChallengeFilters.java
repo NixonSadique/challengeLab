@@ -8,7 +8,6 @@ import java.time.ZonedDateTime;
 public record ChallengeFilters(
         String title,
         Difficulty difficulty,
-        Boolean areTeamsAllowed,
         Integer maxAllowedTeamSize,
         ChallengeStatus status,
         ZonedDateTime deadline

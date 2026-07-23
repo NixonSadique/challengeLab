@@ -1,6 +1,7 @@
 package com.nixon.challengelab.repository;
 
 import com.nixon.challengelab.model.Submission;
+import com.nixon.challengelab.model.enums.SubmissionStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -16,4 +17,6 @@ public interface SubmissionRepository extends JpaRepository<Submission, Long> {
     Boolean existsByTeamIdAndChallengeId(Long teamId, Long challengeId);
 
     List<Submission> findAllByUserId(Long userId);
+
+    boolean existsByStatusAndChallengeId(SubmissionStatus status, Long challengeId);
 }

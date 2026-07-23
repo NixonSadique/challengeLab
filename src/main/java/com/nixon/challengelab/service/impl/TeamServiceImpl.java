@@ -73,6 +73,7 @@ public class TeamServiceImpl implements TeamService {
         member.setUser(contextService.getCurrentUser());
         member.setRole(MEMBER);
         team.getMembers().add(member);
+        member.setTeam(team);
 
 
         return teamMapper.toDto(teamRepository.save(team));
@@ -84,8 +85,10 @@ public class TeamServiceImpl implements TeamService {
                 () -> new ResourceNotFoundException("Team with id: " + teamId + "not found!")
         );
 
-        if (team.getMembers().size() == 1)
+        if (team.getMembers().size() == 1) {
             teamRepository.delete(team);
+            return;
+        }
 
         User currentUser = contextService.getCurrentUser();
         var member = memberRepository.findByTeamIdAndUserId(teamId, currentUser.getId()).orElseThrow(
@@ -98,6 +101,7 @@ public class TeamServiceImpl implements TeamService {
         }
 
         team.getMembers().remove(member);
+        member.setTeam(team);
         teamRepository.save(team);
 
     }

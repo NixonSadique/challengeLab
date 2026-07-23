@@ -5,6 +5,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -61,14 +62,19 @@ public class JwtServiceImpl implements JwtService {
 
     @Override
     public String extractTokenFromCookie(HttpServletRequest request) {
-        var jwtCookie = Arrays.stream(request.getCookies())
-                .filter(c -> c.getName().equals(jwtCookieName))
-                .findFirst().orElse(null);
+        var jwtCookie = request.getCookies();
+        Cookie token = null;
+        if (jwtCookie != null) {
+            token = Arrays.stream(jwtCookie)
+                    .filter(c -> c.getName().equals(jwtCookieName))
+                    .findFirst().orElse(null);
+        }
 
-        if (jwtCookie == null)
+        if (token == null) {
             return null;
+        }
 
-        return jwtCookie.getValue();
+        return token.getValue();
     }
 
     @Override

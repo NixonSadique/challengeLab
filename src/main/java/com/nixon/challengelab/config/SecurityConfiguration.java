@@ -44,7 +44,7 @@ class SecurityConfiguration {
                                         "/swagger-ui/**",
                                         "/swagger-ui.html"
                                         ).permitAll()
-                                        .anyRequest().permitAll()
+                                        .anyRequest().authenticated()
                 )
                 .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
