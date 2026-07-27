@@ -1,8 +1,8 @@
 package com.nixon.challengelab.dto.request;
 
-import java.util.List;
+import jakarta.validation.constraints.NotBlank;
 
 public record TeamRequest(
-        String name
+        @NotBlank String name
 ) {
 }

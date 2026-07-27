@@ -65,7 +65,7 @@ class ChallengeController {
 
     @PatchMapping("/challenges/{id}/status")
     ResponseEntity<ChallengeResponse> updateStatus(@PathVariable Long id,
-                                           @RequestBody UpdateChallengeStatusRequest request) {
+                                           @RequestBody @Valid UpdateChallengeStatusRequest request) {
         return ResponseEntity.ok(service.updateChallenge(id, request.status()));
     }
 

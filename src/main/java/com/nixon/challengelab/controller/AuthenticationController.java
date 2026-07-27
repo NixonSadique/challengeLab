@@ -11,6 +11,7 @@ import com.nixon.challengelab.service.JwtService;
 import com.nixon.challengelab.service.RefreshTokenService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
@@ -31,7 +32,7 @@ class AuthenticationController {
     private final RefreshTokenService refreshTokenService;
 
     @PostMapping("/register")
-    ResponseEntity<TokenResponse> register(@RequestBody @Valid RegisterRequest registerRequest, @RequestParam Role role) {
+    ResponseEntity<TokenResponse> register(@RequestBody @Valid RegisterRequest registerRequest, @RequestParam @NotNull Role role) {
         TokenResponse tokenResponse = authenticationService
                 .createUser(registerRequest, role == Role.ADMIN ? Role.INDIVIDUAL : role);
 

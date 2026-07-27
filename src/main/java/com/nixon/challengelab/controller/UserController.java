@@ -4,6 +4,7 @@ import com.nixon.challengelab.dto.request.UserUpdateRequest;
 import com.nixon.challengelab.dto.response.UserResponse;
 import com.nixon.challengelab.model.enums.Role;
 import com.nixon.challengelab.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,7 +35,7 @@ class UserController {
     }
 
     @PutMapping("/me")
-    ResponseEntity<UserResponse> updateProfile(@RequestBody UserUpdateRequest request, Role role) {
+    ResponseEntity<UserResponse> updateProfile(@RequestBody @Valid UserUpdateRequest request, Role role) {
         return ResponseEntity.ok(service.updateProfile(request, role == ADMIN ? null : role));
     }
 
