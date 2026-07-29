@@ -30,7 +30,7 @@ public interface ChallengeRepository extends JpaRepository<Challenge, Long>, Jpa
     @Transactional
     @Modifying
     @Query("""
-           UPDATE Challenge c SET 
+           UPDATE Challenge c SET
            c.status = :status
            WHERE c.deadline < CURRENT_TIMESTAMP
           """)

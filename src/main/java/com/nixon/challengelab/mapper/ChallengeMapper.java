@@ -3,7 +3,6 @@ package com.nixon.challengelab.mapper;
 import com.nixon.challengelab.dto.request.ChallengeRequest;
 import com.nixon.challengelab.dto.response.ChallengeResponse;
 import com.nixon.challengelab.model.Challenge;
-import com.nixon.challengelab.model.enums.ChallengeStatus;
 import org.springframework.stereotype.Component;
 
 @Component

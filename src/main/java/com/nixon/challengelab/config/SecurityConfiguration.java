@@ -13,6 +13,17 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer.FrameOptionsConfig;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.List;
+
+import static org.springframework.http.HttpMethod.GET;
+import static org.springframework.http.HttpMethod.POST;
+import static org.springframework.http.HttpMethod.PUT;
+import static org.springframework.http.HttpMethod.DELETE;
+import static org.springframework.http.HttpMethod.PATCH;
 
 @Configuration
 @EnableWebSecurity
@@ -25,10 +36,11 @@ class SecurityConfiguration {
     private final CustomAuthenticationEntryPoint authenticationEntryPoint;
 
     @Bean
-    SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    SecurityFilterChain filterChain(HttpSecurity http) {
         return http
                 .formLogin(AbstractHttpConfigurer::disable)
                 .csrf(AbstractHttpConfigurer::disable)
+                .cors(cors -> cors.configurationSource(corsConfiguration()))
                 .headers(headers -> headers.frameOptions(FrameOptionsConfig::sameOrigin))
                 .exceptionHandling(handler -> {
                     handler.accessDeniedHandler(accessDeniedHandler);
@@ -55,7 +67,7 @@ class SecurityConfiguration {
                         ).hasAnyRole("ADMIN", "INDIVIDUAL", "PROFESSIONAL")
 
                         .requestMatchers(
-                                HttpMethod.GET,
+                                GET,
                                 "/api/v1/challenges",
                                 "/api/v1/challenges/*",
                                 "/api/v1/challenges/*/teams",
@@ -94,6 +106,32 @@ class SecurityConfiguration {
                 )
                 .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
+    }
+
+    @Bean
+    CorsConfigurationSource corsConfiguration() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setMaxAge(3200L);
+        configuration.setAllowedOriginPatterns(List.of("localhost:*"));
+        configuration.setAllowedMethods(List.of(
+                GET.name(),
+                POST.name(),
+                PUT.name(),
+                DELETE.name(),
+                PATCH.name()
+        ));
+        configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
+        configuration.setAllowCredentials(true);
+        configuration.setExposedHeaders(List.of(
+                "Authorization",
+                "X-Get-Header",
+                "Access-Control-Allow-Origin",
+                "Access-Control-Allow-Credentials"
+        ));
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 
 }

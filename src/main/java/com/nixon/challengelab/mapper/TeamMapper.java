@@ -6,8 +6,6 @@ import com.nixon.challengelab.model.Team;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.Collections;
-import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class TeamMapper extends Mapper<Team, TeamResponse> {

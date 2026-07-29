@@ -3,7 +3,6 @@ package com.nixon.challengelab.model;
 import com.nixon.challengelab.model.enums.ChallengeStatus;
 import com.nixon.challengelab.model.enums.Difficulty;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
