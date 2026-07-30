@@ -3,7 +3,10 @@ package com.nixon.challengelab.mapper;
 import com.nixon.challengelab.dto.request.ChallengeRequest;
 import com.nixon.challengelab.dto.response.ChallengeResponse;
 import com.nixon.challengelab.model.Challenge;
+import com.nixon.challengelab.model.enums.ChallengeStatus;
 import org.springframework.stereotype.Component;
+
+import static com.nixon.challengelab.model.enums.ChallengeStatus.OPEN;
 
 @Component
 public class ChallengeMapper extends Mapper<Challenge, ChallengeResponse> {
@@ -14,6 +17,7 @@ public class ChallengeMapper extends Mapper<Challenge, ChallengeResponse> {
         challenge.setDescription(request.description());
         challenge.setDifficulty(request.difficulty());
         challenge.setCategory(request.category());
+        challenge.setStatus(OPEN);
         challenge.setMaxTeamSize(request.maxTeamSize() != null ? request.maxTeamSize() : 0);
         challenge.setDeadline(request.deadline());
         return challenge;

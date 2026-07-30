@@ -112,7 +112,7 @@ class SecurityConfiguration {
     CorsConfigurationSource corsConfiguration() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setMaxAge(3200L);
-        configuration.setAllowedOriginPatterns(List.of("localhost:*"));
+        configuration.setAllowedOriginPatterns(List.of("http://localhost:*"));
         configuration.setAllowedMethods(List.of(
                 GET.name(),
                 POST.name(),

@@ -1,18 +1,9 @@
 spring:
   application:
     name: challengeLab
-  datasource:
-    driver-class-name: org.h2.Driver
-    username: sa
-    password: password
-    url: jdbc:h2:./challengelab;AUTO_SERVER=TRUE
-  jpa:
-    hibernate:
-      ddl-auto: update
-    show-sql: true
-logging:
-  level:
-    web: debug
+  profiles:
+    active:
+      - dev
 application:
   security:
     jwt:
@@ -22,3 +13,6 @@ application:
     refresh-token:
       expiration: 1296000000
       name: refresh
+springdoc:
+  swagger-ui:
+    tags-sorter: alpha
