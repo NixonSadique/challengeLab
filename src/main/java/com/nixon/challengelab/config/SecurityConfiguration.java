@@ -19,11 +19,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
 
-import static org.springframework.http.HttpMethod.GET;
-import static org.springframework.http.HttpMethod.POST;
-import static org.springframework.http.HttpMethod.PUT;
-import static org.springframework.http.HttpMethod.DELETE;
-import static org.springframework.http.HttpMethod.PATCH;
+import static org.springframework.http.HttpMethod.*;
 
 @Configuration
 @EnableWebSecurity
@@ -56,15 +52,24 @@ class SecurityConfiguration {
 
                         .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
 
+                        .requestMatchers(HttpMethod.POST, "/api/v1/challenges")
+                        .hasAnyRole("ADMIN", "COMPANY", "PROFESSIONAL")
+
+
                         .requestMatchers(
                                 HttpMethod.POST,
-                                "/api/v1/challenges",
                                 "/api/v1/challenges/*/submissions",
                                 "/api/v1/challenges/*/teams",
-                                "/api/v1/teams/*/join",
-                                "/api/v1/ratings/submissions/*",
-                                "/api/v1/submissions/*/winner"
-                        ).hasAnyRole("ADMIN", "INDIVIDUAL", "PROFESSIONAL")
+                                "/api/v1/teams/*/join"
+                        ).hasAnyRole("ADMIN", "COMPANY", "PROFESSIONAL", "INDIVIDUAL")
+
+                        // Rating/judging stays limited to non-participant roles.
+                        .requestMatchers(HttpMethod.POST, "/api/v1/ratings/submissions/*")
+                        .hasAnyRole("ADMIN", "COMPANY", "PROFESSIONAL")
+
+
+                        .requestMatchers(HttpMethod.PATCH, "/api/v1/submissions/*/winner")
+                        .hasAnyRole("ADMIN", "COMPANY", "PROFESSIONAL")
 
                         .requestMatchers(
                                 GET,
@@ -103,6 +108,7 @@ class SecurityConfiguration {
                         ).authenticated()
 
                         .anyRequest().authenticated()
+
                 )
                 .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
