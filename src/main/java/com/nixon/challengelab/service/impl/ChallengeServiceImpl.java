@@ -3,6 +3,7 @@ package com.nixon.challengelab.service.impl;
 import com.nixon.challengelab.dto.request.ChallengeFilters;
 import com.nixon.challengelab.dto.request.ChallengeRequest;
 import com.nixon.challengelab.dto.response.ChallengeResponse;
+import com.nixon.challengelab.exceptions.ForbiddenException;
 import com.nixon.challengelab.exceptions.ResourceNotFoundException;
 import com.nixon.challengelab.mapper.ChallengeMapper;
 import com.nixon.challengelab.model.Challenge;
@@ -76,6 +77,10 @@ public class ChallengeServiceImpl implements ChallengeService {
                 () -> new ResourceNotFoundException("Challenge not found with id: " + id)
         );
 
+        if (!contextService.getCurrentUser().equals(challenge.getCreator())) {
+            throw new ForbiddenException("Only the challenge creator must update this service!");
+        }
+
         Challenge updated = mapper.update(request, challenge);
 
         return mapper.toDto(repository.save(updated));
@@ -87,6 +92,10 @@ public class ChallengeServiceImpl implements ChallengeService {
                 () -> new ResourceNotFoundException("Challenge not found with id: " + id)
         );
 
+        if (!contextService.getCurrentUser().equals(challenge.getCreator())) {
+            throw new ForbiddenException("Only the challenge creator must update this service!");
+        }
+
         if (status.equals(ChallengeStatus.CLOSED)) {
             challenge.setDeadline(ZonedDateTime.now());
         }
@@ -97,6 +106,13 @@ public class ChallengeServiceImpl implements ChallengeService {
 
     @Override
     public void deleteById(Long id) {
+        Challenge challenge = repository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("Challenge not found with id: " + id)
+        );
+
+        if (!contextService.getCurrentUser().equals(challenge.getCreator())) {
+            throw new ForbiddenException("Only the challenge creator must update this service!");
+        }
         repository.deleteById(id);
     }
 

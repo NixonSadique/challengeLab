@@ -14,7 +14,6 @@ import org.springframework.context.annotation.Configuration;
         info = @Info(
                 title = "Challenge Lab",
                 version = "v1.0.0",
-                description = "",
                 contact = @Contact(
                         name = "Nixon Sadique",
                         email = "nixonsadique2005@gmail.com"
@@ -31,14 +30,14 @@ import org.springframework.context.annotation.Configuration;
         bearerFormat = "JWT",
         in = SecuritySchemeIn.HEADER,
         description = """
-            JWT Bearer authentication.
-
-            Obtain a token from the authentication endpoint and include it in
-            the Authorization header.
-
-            Example:
-            Authorization: Bearer <your-jwt-token>
-            """
+                JWT Bearer authentication.
+                
+                Obtain a token from the authentication endpoint and include it in
+                the Authorization header.
+                
+                Example:
+                Authorization: Bearer <your-jwt-token>
+                """
 )
 class OpenApiConfiguration {
 

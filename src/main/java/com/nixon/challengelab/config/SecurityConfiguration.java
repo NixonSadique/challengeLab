@@ -61,7 +61,7 @@ class SecurityConfiguration {
                                 "/api/v1/challenges/*/submissions",
                                 "/api/v1/challenges/*/teams",
                                 "/api/v1/teams/*/join"
-                        ).hasAnyRole("ADMIN", "COMPANY", "PROFESSIONAL", "INDIVIDUAL")
+                        ).authenticated()
 
                         // Rating/judging stays limited to non-participant roles.
                         .requestMatchers(HttpMethod.POST, "/api/v1/ratings/submissions/*")

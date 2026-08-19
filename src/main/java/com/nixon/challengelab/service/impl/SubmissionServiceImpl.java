@@ -126,9 +126,9 @@ public class SubmissionServiceImpl implements SubmissionService {
         if (submissionRepository.existsByStatusAndChallengeId(SubmissionStatus.WINNER, challenge.getId())) {
             throw new ConflictException("This challenge already has a winner");
         }
-        if (challenge.getCreator().getId().equals(contextService.getCurrentUserId()))
-            submission.setStatus(SubmissionStatus.WINNER);
-
+        if (!challenge.getCreator().getId().equals(contextService.getCurrentUserId()))
+            throw new ForbiddenException("Only the creator may choose a winner!");
+        submission.setStatus(SubmissionStatus.WINNER);
 
         return mapper.toDto(submissionRepository.save(submission));
     }

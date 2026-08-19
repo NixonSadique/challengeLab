@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.time.OffsetDateTime;
@@ -53,7 +54,7 @@ public class ApiExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
     }
 
-
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Exception.class)
     public ResponseEntity<StandardErrorResponse> handleException(Exception ex, HttpServletRequest request) {
         StandardErrorResponse response = new StandardErrorResponse(
@@ -66,7 +67,7 @@ public class ApiExceptionHandler {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public  ResponseEntity<MethodArgNotValidExceptionResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex, HttpServletRequest request) {
+    public ResponseEntity<MethodArgNotValidExceptionResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex, HttpServletRequest request) {
         StandardErrorResponse response = new StandardErrorResponse(
                 HttpStatus.BAD_REQUEST.value(),
                 OffsetDateTime.now(),
@@ -75,9 +76,8 @@ public class ApiExceptionHandler {
         );
 
         List<ValidationErrors> fields = new ArrayList<>();
-        ex.getBindingResult().getFieldErrors().forEach((fieldError) -> {
-            fields.add(new ValidationErrors(fieldError.getField(), fieldError.getDefaultMessage()));
-        });
+        ex.getBindingResult().getFieldErrors().forEach((fieldError) ->
+                fields.add(new ValidationErrors(fieldError.getField(), fieldError.getDefaultMessage())));
 
         return new ResponseEntity<>(new MethodArgNotValidExceptionResponse(
                 response, fields
